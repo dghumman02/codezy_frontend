@@ -1,10 +1,28 @@
 
 import React from "react";
+import { useLocation } from "react-router-dom";
 import NotificationDropdown from "../NotificationDropdown";
 import { LogOut } from "lucide-react";
 
 const LearnerNavbar = () => {
   const fullName = localStorage.getItem("fullName") || "User";
+  const { pathname } = useLocation();
+
+  const navLink = (href, label) => {
+    const isActive = pathname === href || pathname.startsWith(href + "/");
+    return (
+      <a
+        href={href}
+        className={
+          isActive
+            ? "bg-purple-50 text-purple-700 px-4 py-2 rounded-xl font-bold"
+            : "text-gray-500 hover:text-purple-700 px-4 py-2"
+        }
+      >
+        {label}
+      </a>
+    );
+  };
 
   const handleLogout = () => {
     if (window.confirm("Are you sure you want to logout?")) {
@@ -28,31 +46,10 @@ const LearnerNavbar = () => {
         </a>
 
         <div className="hidden md:flex gap-2 text-sm font-semibold">
-          <a
-            href="/courses"
-            className="bg-purple-50 text-purple-700 px-4 py-2 rounded-xl font-bold"
-          >
-            Courses
-          </a>
-          <a
-            href="/learner/competitions"
-            className="text-gray-500 hover:text-purple-700 px-4 py-2"
-          >
-            Competitions
-          </a>
-          <a
-            href="/achievements"
-            className="text-gray-500 hover:text-purple-700 px-4 py-2"
-          >
-            Achievements
-          </a>
-          <a
-            href="/learner/feedback"
-            className="text-gray-500 hover:text-purple-700 px-4 py-2"
-          >
-            Feedback
-          </a>
-
+          {navLink("/courses", "Courses")}
+          {navLink("/learner/competitions", "Competitions")}
+          {navLink("/achievements", "Achievements")}
+          {navLink("/learner/feedback", "Feedback")}
         </div>
       </div>
 
