@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import loginGif from '../assets/login.gif';
 import { jwtDecode } from "jwt-decode"; 
 import { useNavigate } from 'react-router-dom';
 import { Shield, ArrowLeft, X } from 'lucide-react'; // Added X for closing modal

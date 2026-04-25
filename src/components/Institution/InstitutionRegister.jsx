@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import loginGif from '../../assets/login.gif';
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Building2, Mail, Lock, User, Globe, Phone, Users, ArrowRight } from "lucide-react";

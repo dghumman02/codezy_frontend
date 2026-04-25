@@ -1,4 +1,5 @@
 import { useState } from "react";
+import loginGif from '../assets/login.gif';
 import { useNavigate } from "react-router-dom";
 
 export default function CodezyRegister() {
