@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NotificationDropdown from '../NotificationDropdown';
-import ChatWidget from '../ai/ChatWidget';
+import ChatWidget from './ai/ChatWidget';
 import { 
   Trophy, CheckCircle, Circle, Lock, 
   ArrowRight, MessageCircle, Bell, 

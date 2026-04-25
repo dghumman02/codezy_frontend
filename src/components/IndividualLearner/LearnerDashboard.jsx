@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NotificationDropdown from '../NotificationDropdown';
-import ChatWidget from '../ai/ChatWidget'; 
+import ChatWidget from './ai/ChatWidget'; 
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 

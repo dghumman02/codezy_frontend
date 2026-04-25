@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import NotificationDropdown from '../NotificationDropdown';
-import ChatWidget from '../ai/ChatWidget'; // <-- Modular AI chat
+import ChatWidget from './ai/ChatWidget';
 import { 
   Bell, MessageCircle, X, Send, Maximize2, Minimize2, 
   CheckCircle, PlayCircle, Lock, Trophy, Timer, Code, LogOut 

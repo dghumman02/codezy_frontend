@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import LearnerNavbar from './Navbar';
-import ChatWidget from '../ai/ChatWidget';
+import ChatWidget from './ai/ChatWidget';
 import { getAchievementsSummary } from '../../services/learnerGamificationApi';
 import {
   Trophy, Star, Target, Flame, Lock, CheckCircle,
