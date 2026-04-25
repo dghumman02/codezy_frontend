@@ -62,7 +62,7 @@ const CoursesPage = () => {
           console.log("ENROLLED DATA:", res.data);
           setEnrolledCourses(res.data || []);
         })
-        .catch(err => console.error("Enrolled courses error:", err));
+        .catch(err => { console.error("Enrolled courses error:", err); setEnrolledCourses([]); });
     }
   }, [userId]);
 

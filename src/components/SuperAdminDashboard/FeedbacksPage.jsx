@@ -197,7 +197,7 @@ const SuperAdminFeedbacksPage = () => {
     const token = localStorage.getItem('token');
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/feedback`, { headers: { Authorization: `Bearer ${token}` } })
-      .then(r => { setFeedbacks(r.data); setLoading(false); })
+      .then(r => { setFeedbacks(Array.isArray(r.data) ? r.data : []); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
 

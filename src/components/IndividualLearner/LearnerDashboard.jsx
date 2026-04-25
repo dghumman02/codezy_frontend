@@ -397,7 +397,7 @@ const LearnerDashboard = () => {
                 ) : selectedCourse.modules?.length > 0 ? (
                   <div className="space-y-3">
                     <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight">Curriculum</h3>
-                    {selectedCourse.modules.map((mod, mIdx) => {
+                    {(selectedCourse.modules || []).map((mod, mIdx) => {
                       const lessons = mod.lessons?.length ? mod.lessons : (mod.subModules?.[0]?.lessons || []);
                       return (
                         <div key={mIdx} className="p-4 bg-gray-50 rounded-2xl border border-gray-100">

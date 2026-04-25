@@ -44,7 +44,11 @@ const SuperAdminDashboard = () => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/superadmin/dashboard-stats`);
-        setData(res.data);
+        setData({
+          summary: res.data.summary || { institutions: 0, individuals: 0, activeUsers: 0 },
+          institutions: Array.isArray(res.data.institutions) ? res.data.institutions : [],
+          individualCourses: Array.isArray(res.data.individualCourses) ? res.data.individualCourses : [],
+        });
       } catch (err) {
         console.error("Fetch error:", err);
         // Fallback dummy data for development if backend is not ready
