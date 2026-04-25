@@ -174,8 +174,8 @@ const CourseCard = ({ course, index, isSelected, onSelect, onDelete, onEdit, onV
     </div>
 
     {course.thumbnail ? (
-      <img 
-        src={course.thumbnail} 
+      <img
+        src={course.thumbnail.replace(/^https?:\/\/localhost:\d+/, import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000')}
         alt={course.title}
         className="h-40 w-full object-cover"
       />

@@ -433,7 +433,7 @@ useEffect(() => {
                       {courseData.thumbnail ? (
                         <div className="relative rounded-xl overflow-hidden border border-gray-100 h-28 bg-gray-50 group">
                           <img
-                            src={courseData.thumbnail}
+                            src={courseData.thumbnail.replace(/^https?:\/\/localhost:\d+/, import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000')}
                             alt="Course thumbnail"
                             className="h-full w-full object-cover"
                           />
