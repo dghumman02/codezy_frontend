@@ -149,7 +149,7 @@ useEffect(() => {
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
-      setCourseData(prev => ({ ...prev, thumbnail: `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}${res.data.thumbnailUrl}` }));
+      setCourseData(prev => ({ ...prev, thumbnail: res.data.thumbnailUrl }));
     } catch (err) {
       alert('Thumbnail upload failed: ' + (err.response?.data?.error || err.message));
     } finally {
@@ -433,7 +433,7 @@ useEffect(() => {
                       {courseData.thumbnail ? (
                         <div className="relative rounded-xl overflow-hidden border border-gray-100 h-28 bg-gray-50 group">
                           <img
-                            src={courseData.thumbnail.replace(/^https?:\/\/localhost:\d+/, import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000')}
+                            src={courseData.thumbnail}
                             alt="Course thumbnail"
                             className="h-full w-full object-cover"
                           />
