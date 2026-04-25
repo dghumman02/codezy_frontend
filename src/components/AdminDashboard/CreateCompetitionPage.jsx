@@ -85,7 +85,7 @@ const CreateCompetitionPage = () => {
             try {
                 setLoadingCourses(true);
                 const token = localStorage.getItem('token');
-                const res = await axios.get('http://localhost:5000/api/courses/admin/all', {
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/admin/all`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setAvailableCourses(res.data || []);
@@ -316,7 +316,7 @@ const CreateCompetitionPage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:5000/api/competitions', payload, {
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions`, payload, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             alert(`Competition "${formData.title}" created successfully!`);

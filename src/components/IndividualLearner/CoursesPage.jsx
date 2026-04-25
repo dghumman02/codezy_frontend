@@ -57,7 +57,7 @@ const CoursesPage = () => {
   useEffect(() => {
     if (userId) {
       axios
-        .get(`http://localhost:5000/api/learners/enrolled-courses/${userId}`)
+        .get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/enrolled-courses/${userId}`)
         .then(res => {
           console.log("ENROLLED DATA:", res.data);
           setEnrolledCourses(res.data || []);
@@ -72,8 +72,8 @@ const CoursesPage = () => {
       setLoadingProgress(true);
       
       Promise.all([
-        axios.get(`http://localhost:5000/api/learner-submissions/${userId}/course/${selectedCourse._id}`),
-        axios.get(`http://localhost:5000/api/learner-submissions/${userId}/course-progress/${selectedCourse._id}`)
+        axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learner-submissions/${userId}/course/${selectedCourse._id}`),
+        axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learner-submissions/${userId}/course-progress/${selectedCourse._id}`)
       ])
         .then(([submissionsRes, progressRes]) => {
           setSubmissions(submissionsRes.data.submissions || {});
@@ -139,7 +139,7 @@ const CoursesPage = () => {
     }));
     
     try {
-      const response = await axios.post('http://localhost:5000/api/learner-submissions/submit-quiz', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learner-submissions/submit-quiz`, {
         learnerId: userId,
         courseId: selectedCourse._id,
         childCourseId: activeChildCourse?._id || null,
@@ -163,7 +163,7 @@ const CoursesPage = () => {
       
       // Refresh course progress
       const progressRes = await axios.get(
-        `http://localhost:5000/api/learner-submissions/${userId}/course-progress/${selectedCourse._id}`
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learner-submissions/${userId}/course-progress/${selectedCourse._id}`
       );
       setCourseProgress(progressRes.data.progress || null);
       
@@ -741,7 +741,7 @@ const CoursesPage = () => {
                         src={
                           activeLesson.videoUrl.startsWith("http")
                             ? activeLesson.videoUrl
-                            : `http://localhost:5000${activeLesson.videoUrl}`
+                            : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}${activeLesson.videoUrl}`
                         }
                       >
                         Your browser does not support the video tag.

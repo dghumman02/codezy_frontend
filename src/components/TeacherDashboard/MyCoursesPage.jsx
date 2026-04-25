@@ -21,7 +21,7 @@ const MyCoursesPage = () => {
       const teacherId = localStorage.getItem("userId");
       if (!teacherId || !token) return;
 
-      const res = await fetch(`http://localhost:5000/api/courses/teacher/${teacherId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/teacher/${teacherId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"

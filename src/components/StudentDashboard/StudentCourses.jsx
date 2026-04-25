@@ -32,7 +32,7 @@ const StudentCourses = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/api/students/${studentId}/courses`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${studentId}/courses`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }

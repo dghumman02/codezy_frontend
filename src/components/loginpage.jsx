@@ -68,7 +68,7 @@ export default function CodezyLogin() {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/forgot-password",
+        `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/auth/forgot-password`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -105,7 +105,7 @@ export default function CodezyLogin() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/auth/login`, {
         // ... (Same as your original code)
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -141,7 +141,7 @@ export default function CodezyLogin() {
 
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/auth/verify-2fa', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/auth/verify-2fa`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: tempUserId, token: mfaCode }),
@@ -251,7 +251,7 @@ export default function CodezyLogin() {
             {/* Left Gif Section */}
             <div className="md:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-purple-700 p-12 flex items-center justify-center relative overflow-hidden">
               <img
-                src="/src/assets/login.gif"
+                src={loginGif}
                 alt="Welcome"
                 className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
               />

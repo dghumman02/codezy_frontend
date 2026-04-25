@@ -27,7 +27,7 @@ import {
 import { motion } from "framer-motion";
 import { toast } from "react-hot-toast";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api`;
 
 // Custom colors for charts
 const COLORS = {

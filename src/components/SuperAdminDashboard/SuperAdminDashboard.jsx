@@ -43,7 +43,7 @@ const SuperAdminDashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/superadmin/dashboard-stats');
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/superadmin/dashboard-stats`);
         setData(res.data);
       } catch (err) {
         console.error("Fetch error:", err);

@@ -19,7 +19,7 @@ const LabSubmissionsPage = () => {
       setLoading(true);
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:5000/api/courses/${courseId}/classes/${classId}/labs/${labId}/submissions`,
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${courseId}/classes/${classId}/labs/${labId}/submissions`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -38,7 +38,7 @@ const LabSubmissionsPage = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(
-        `http://localhost:5000/api/courses/${courseId}/classes/${classId}`,
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${courseId}/classes/${classId}`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }

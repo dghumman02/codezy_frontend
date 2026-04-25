@@ -23,7 +23,7 @@ const LabResults = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/api/students/${studentId}/lab-results/${labId}`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${studentId}/lab-results/${labId}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }

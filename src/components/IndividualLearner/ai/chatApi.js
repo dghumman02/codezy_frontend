@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const sendChatMessage = async (question, context = {}, conversationHistory = []) => {
   try {
-    const response = await axios.post("http://localhost:5000/api/learners/chatbot", {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/learners/chatbot`, {
       question,
       context,
       conversationHistory // ✅ ADD THIS

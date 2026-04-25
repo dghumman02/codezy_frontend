@@ -50,7 +50,7 @@ const InstitutionRegister = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/institution/register", {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/auth/institution/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -94,7 +94,7 @@ const InstitutionRegister = () => {
             
             {/* Left Section */}
             <div className="md:w-5/12 bg-gradient-to-br from-indigo-700 via-purple-700 to-indigo-900 p-12 flex flex-col items-center justify-center text-white">
-              <img src="/src/assets/login.gif" alt="Register" className="w-full max-w-sm mx-auto rounded-2xl shadow-2xl mb-8" />
+              <img src={loginGif} alt="Register" className="w-full max-w-sm mx-auto rounded-2xl shadow-2xl mb-8" />
               <div className="text-center">
                 <h2 className="text-2xl font-bold mb-2">Codezy for Institutions</h2>
                 <p className="text-indigo-100 opacity-80">Centralize your labs, courses, and student tracking.</p>

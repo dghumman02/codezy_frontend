@@ -49,8 +49,8 @@ const LearnerCompetitionSession = () => {
     const isStudent = userRole === 'student';
     const backUrl = isStudent ? '/student/competitions' : '/learner/competitions';
     const submitEndpoint = isStudent
-        ? `http://localhost:5000/api/platform-competitions/${competitionId}/student-submit`
-        : `http://localhost:5000/api/platform-competitions/${competitionId}/learner-submit`;
+        ? `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${competitionId}/student-submit`
+        : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${competitionId}/learner-submit`;
 
     const [compData, setCompData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -75,7 +75,7 @@ const LearnerCompetitionSession = () => {
         if (!learnerId) { navigate('/login'); return; }
         if (!competitionId) { navigate(-1); return; }
 
-        axios.get(`http://localhost:5000/api/platform-competitions/${competitionId}/learner-view`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${competitionId}/learner-view`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(r => {
@@ -116,7 +116,7 @@ const LearnerCompetitionSession = () => {
         setRunResult(null);
         try {
             const r = await axios.post(
-                `http://localhost:5000/api/platform-competitions/${competitionId}/run`,
+                `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${competitionId}/run`,
                 { taskId: currentTask._id, code, language },
                 { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
             );
@@ -149,7 +149,7 @@ const LearnerCompetitionSession = () => {
         for (const task of compData.tasks) {
             try {
                 const r = await axios.post(
-                    `http://localhost:5000/api/platform-competitions/${competitionId}/run`,
+                    `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${competitionId}/run`,
                     { taskId: task._id, code: taskCodes[task._id], language },
                     { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } }
                 );

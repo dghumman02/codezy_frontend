@@ -134,8 +134,8 @@ const LeaderboardModal = ({ comp, onClose }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         const url = comp.isPlatformCompetition
-            ? `http://localhost:5000/api/platform-competitions/${comp._id}/leaderboard`
-            : `http://localhost:5000/api/competitions/${comp._id}/leaderboard`;
+            ? `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${comp._id}/leaderboard`
+            : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions/${comp._id}/leaderboard`;
 
         fetch(url, { headers: { Authorization: `Bearer ${token}` } })
             .then(r => r.json())
@@ -269,8 +269,8 @@ const StudentCompetitions = () => {
             try {
                 const headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
                 const [instRes, platformRes] = await Promise.all([
-                    fetch(`http://localhost:5000/api/competitions/student/${studentId}`, { headers }),
-                    fetch(`http://localhost:5000/api/platform-competitions/student`, { headers })
+                    fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions/student/${studentId}`, { headers }),
+                    fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/student`, { headers })
                 ]);
                 const instData = await instRes.json();
                 const platformData = await platformRes.json();

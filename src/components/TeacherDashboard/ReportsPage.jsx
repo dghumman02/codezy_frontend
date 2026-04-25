@@ -20,7 +20,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-hot-toast";
 import AnalyticsView from "./AnalyticsView";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api`;
 
 const ReportsPage = () => {
   const teacherId = localStorage.getItem("userId");

@@ -45,7 +45,7 @@ const LearnerDashboard = () => {
 
   const fetchDashboardData = async (autoOpenId = null) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/learners/dashboard-data/${userId}`);
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/dashboard-data/${userId}`);
       setData(res.data);
 
       if (autoOpenId) {
@@ -74,7 +74,7 @@ const LearnerDashboard = () => {
     const poll = async () => {
       attempts++;
       try {
-        const res = await axios.get(`http://localhost:5000/api/learners/dashboard-data/${userId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/dashboard-data/${userId}`);
         const freshData = res.data;
 
         const isEnrolled = freshData.enrolled?.some(e => {
@@ -110,7 +110,7 @@ const LearnerDashboard = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        `http://localhost:5000/api/payments/create-checkout-session`,
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/payments/create-checkout-session`,
         {
           courseTitle: course.title,
           coursePrice: course.price,
@@ -158,7 +158,7 @@ const LearnerDashboard = () => {
     const totalQuestions = activeLesson.quizData.length;
 
     try {
-      await axios.post('http://localhost:5000/api/learner-submissions/submit-quiz', {
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learner-submissions/submit-quiz`, {
         learnerId: userId,
         courseId: lessonContext.courseId || 'unknown',
         childCourseId: lessonContext.childCourseId || null,
@@ -447,7 +447,7 @@ const LearnerDashboard = () => {
                         src={
                           activeLesson.videoUrl.startsWith("http")
                             ? activeLesson.videoUrl
-                            : `http://localhost:5000${activeLesson.videoUrl}`
+                            : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}${activeLesson.videoUrl}`
                         }
                       >
                         Your browser does not support the video tag.

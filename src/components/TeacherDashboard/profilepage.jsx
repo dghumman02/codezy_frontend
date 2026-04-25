@@ -55,7 +55,7 @@ const Profile = () => {
   const fetchTeacherData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:5000/api/teachers/${teacherId}`, {
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -80,7 +80,7 @@ const Profile = () => {
       }));
 
       // UPDATED LOGIC: Pulling stats from the backend response
-      const overviewRes = await axios.get(`http://localhost:5000/api/teachers/${teacherId}/overview`, {
+      const overviewRes = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}/overview`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -123,7 +123,7 @@ const Profile = () => {
         joinDate: userData.personalInfo.joinDate
       };
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5000/api/teachers/${teacherId}`, payload, {headers: { Authorization: `Bearer ${token}` }});
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}`, payload, {headers: { Authorization: `Bearer ${token}` }});
       setIsEditing(false);
       alert("Profile updated successfully!");
       fetchTeacherData();
@@ -142,7 +142,7 @@ const Profile = () => {
     setIsSaving(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5000/api/teachers/${teacherId}`, { password: newPassword }, {headers: { Authorization: `Bearer ${token}` }});
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}`, { password: newPassword }, {headers: { Authorization: `Bearer ${token}` }});
       setUserData(prev => ({ ...prev, security: { currentPassword: '', newPassword: '', confirmPassword: '' } }));
       alert("Password updated successfully!");
     } catch (err) {
@@ -156,7 +156,7 @@ const Profile = () => {
   const handleEnable2FA = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`http://localhost:5000/api/teachers/${teacherId}/2fa/setup`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}/2fa/setup`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -173,7 +173,7 @@ const Profile = () => {
     setIsVerifying2FA(true);
     try {
       const token = localStorage.getItem("token");
-      await axios.post(`http://localhost:5000/api/teachers/${teacherId}/2fa/verify`, { token: twoFactorToken }, {headers: { Authorization: `Bearer ${token}` }});
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}/2fa/verify`, { token: twoFactorToken }, {headers: { Authorization: `Bearer ${token}` }});
       alert("2FA is now active!");
       setShow2FAModal(false);
       setTwoFactorToken('');
@@ -189,7 +189,7 @@ const Profile = () => {
     if (window.confirm("Are you sure you want to disable Two-Factor Authentication? Your account will be less secure.")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.post(`http://localhost:5000/api/teachers/${teacherId}/2fa/disable`, {}, {headers: { Authorization: `Bearer ${token}` }});
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}/2fa/disable`, {}, {headers: { Authorization: `Bearer ${token}` }});
         alert("2FA has been disabled.");
         fetchTeacherData();
       } catch (err) {

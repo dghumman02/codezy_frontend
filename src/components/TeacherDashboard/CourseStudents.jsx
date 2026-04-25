@@ -41,7 +41,7 @@ const CourseStudents = () => {
         const fetchInitialData = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const res = await axios.get('http://localhost:5000/api/courses', {
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const allCourses = res.data;
@@ -67,7 +67,7 @@ const CourseStudents = () => {
         try {
             const token = localStorage.getItem("token");
             const res = await axios.get(
-                `http://localhost:5000/api/courses/${cId}/classes/${clsId}/students`,
+                `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${cId}/classes/${clsId}/students`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             setStudents(res.data);
@@ -120,7 +120,7 @@ const CourseStudents = () => {
             await Promise.all(
                 selectedStudentIds.map(id =>
                     axios.delete(
-                        `http://localhost:5000/api/courses/${course._id}/classes/${classId}/students/${id}`,
+                        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${course._id}/classes/${classId}/students/${id}`,
                         { headers: { Authorization: `Bearer ${token}` } }
                     )
                 )
@@ -153,7 +153,7 @@ const CourseStudents = () => {
                 try {
                     const token = localStorage.getItem("token");
                     await axios.post(
-                        `http://localhost:5000/api/courses/${course._id}/classes/${classId}/students`,
+                        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${course._id}/classes/${classId}/students`,
                         { students: parsedStudents },
                         { headers: { Authorization: `Bearer ${token}` } }
                     );
@@ -176,13 +176,13 @@ const CourseStudents = () => {
             const token = localStorage.getItem("token");
             if (editIndex !== null) {
                 await axios.put(
-                    `http://localhost:5000/api/courses/${course._id}/classes/${classId}/students/${students[editIndex]._id}`,
+                    `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${course._id}/classes/${classId}/students/${students[editIndex]._id}`,
                     manualStudent,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
             } else {
                 await axios.post(
-                    `http://localhost:5000/api/courses/${course._id}/classes/${classId}/students`,
+                    `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${course._id}/classes/${classId}/students`,
                     { students: [manualStudent] },
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
@@ -200,7 +200,7 @@ const CourseStudents = () => {
         try {
             const token = localStorage.getItem("token");
             await axios.delete(
-                `http://localhost:5000/api/courses/${course._id}/classes/${classId}/students/${student._id}`,
+                `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${course._id}/classes/${classId}/students/${student._id}`,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
             fetchStudents(course._id, classId);
@@ -217,7 +217,7 @@ const CourseStudents = () => {
             const token = localStorage.getItem("token");
             const endpoint = student.isFrozen ? 'unfreeze' : 'freeze';
             await axios.patch(
-                `http://localhost:5000/api/courses/${course._id}/classes/${classId}/students/${student._id}/${endpoint}`,
+                `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${course._id}/classes/${classId}/students/${student._id}/${endpoint}`,
                 {},
                 { headers: { Authorization: `Bearer ${token}` } }
             );

@@ -56,7 +56,7 @@ const StudentAchievements = () => {
     const fetchAchievements = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/api/students/${STUDENT_ID}/achievements`
+          `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${STUDENT_ID}/achievements`
         );
         
         if (!response.ok) {

@@ -31,7 +31,7 @@ const SharedLabsPage = () => {
       if (authorFilter) params.author = authorFilter;
 
       const res = await axios.get(
-        `http://localhost:5000/api/shared-labs/course/${courseId}`,
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/shared-labs/course/${courseId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
           params,
@@ -49,7 +49,7 @@ const SharedLabsPage = () => {
   const fetchAuthors = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/shared-labs/course/${courseId}/authors`,
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/shared-labs/course/${courseId}/authors`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAuthors(res.data || []);
@@ -76,7 +76,7 @@ const SharedLabsPage = () => {
   const handleDelete = async (labId) => {
     if (!window.confirm("Are you sure you want to delete this shared lab template?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/shared-labs/${labId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/shared-labs/${labId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchSharedLabs();
@@ -88,7 +88,7 @@ const SharedLabsPage = () => {
 
   const handlePreview = async (labId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/shared-labs/${labId}`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/shared-labs/${labId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setPreviewLab(res.data);

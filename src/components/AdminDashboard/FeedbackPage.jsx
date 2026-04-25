@@ -63,7 +63,7 @@ const AdminFeedbackPage = () => {
     const token = localStorage.getItem('token');
     if (!token) return;
     axios
-      .get('http://localhost:5000/api/feedback/my', { headers: { Authorization: `Bearer ${token}` } })
+      .get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/feedback/my`, { headers: { Authorization: `Bearer ${token}` } })
       .then(r => {
         if (r.data) {
           setRatings(r.data.ratings);
@@ -89,7 +89,7 @@ const AdminFeedbackPage = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.post(
-        'http://localhost:5000/api/feedback',
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/feedback`,
         { ratings, review },
         { headers: { Authorization: `Bearer ${token}` } }
       );

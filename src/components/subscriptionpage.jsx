@@ -80,7 +80,7 @@ export default function SubscriptionPage() {
 
     const fetchSubscription = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/api/subscription/user/${userId}`);
+        const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/subscription/user/${userId}`);
         if (res.ok) {
           const data = await res.json();
           setCurrentPlan(data.planName);
@@ -142,7 +142,7 @@ export default function SubscriptionPage() {
     }
 
     try {
-      const tenantRes = await fetch(`http://localhost:5000/api/auth/get-tenant/${userId}`, {
+      const tenantRes = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/auth/get-tenant/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

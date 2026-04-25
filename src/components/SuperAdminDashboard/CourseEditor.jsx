@@ -64,7 +64,7 @@ useEffect(() => {
     const loadCourseData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:5000/api/curriculum/global-courses/${courseId}`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/curriculum/global-courses/${courseId}`);
         if (!res.data) return;
 
         let loaded = res.data;
@@ -145,11 +145,11 @@ useEffect(() => {
       const formData = new FormData();
       formData.append('thumbnail', file);
       const res = await axios.post(
-        'http://localhost:5000/api/curriculum/global-courses/upload-thumbnail',
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/curriculum/global-courses/upload-thumbnail`,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
-      setCourseData(prev => ({ ...prev, thumbnail: `http://localhost:5000${res.data.thumbnailUrl}` }));
+      setCourseData(prev => ({ ...prev, thumbnail: `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}${res.data.thumbnailUrl}` }));
     } catch (err) {
       alert('Thumbnail upload failed: ' + (err.response?.data?.error || err.message));
     } finally {
@@ -277,7 +277,7 @@ useEffect(() => {
             }));
             finalPayload.modules = [];
         }
-        const res = await axios.post('http://localhost:5000/api/curriculum/global-courses', finalPayload);
+        const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/curriculum/global-courses`, finalPayload);
         if (res.data.data?._id) setCourseData(prev => ({ ...prev, _id: res.data.data._id }));
         alert("Course published successfully!");
         navigate('/superadmin-courses');
@@ -561,7 +561,7 @@ const LessonDetailEditor = ({ lesson, setLesson, fileInputRef, isViewMode, cours
             console.log("Uploading with:", { courseId, moduleId, lessonId: lessonIdentifier });
 
             const res = await axios.post(
-                "http://localhost:5000/api/curriculum/global-courses/upload-video",
+                `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/curriculum/global-courses/upload-video`,
                 formData,
                 {
                     headers: { "Content-Type": "multipart/form-data" },
@@ -670,7 +670,7 @@ const LessonDetailEditor = ({ lesson, setLesson, fileInputRef, isViewMode, cours
                             src={
                                 lesson.videoUrl.startsWith("http")
                                 ? lesson.videoUrl
-                                : `http://localhost:5000${lesson.videoUrl}`
+                                : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}${lesson.videoUrl}`
                             }
                             >
                             Your browser does not support the video tag.

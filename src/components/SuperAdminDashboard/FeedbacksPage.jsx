@@ -196,7 +196,7 @@ const SuperAdminFeedbacksPage = () => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     axios
-      .get('http://localhost:5000/api/feedback', { headers: { Authorization: `Bearer ${token}` } })
+      .get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/feedback`, { headers: { Authorization: `Bearer ${token}` } })
       .then(r => { setFeedbacks(r.data); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);

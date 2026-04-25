@@ -70,7 +70,7 @@ const AdminDashboard = () => {
         if (!token) return;
 
         // Fetch teachers
-        const teachersRes = await fetch('http://localhost:5000/api/teachers', {
+        const teachersRes = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -103,7 +103,7 @@ const AdminDashboard = () => {
   const refreshTeachers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const teachersRes = await fetch('http://localhost:5000/api/teachers', {
+      const teachersRes = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem('token');
       const endpoint = teacher.isFrozen ? 'unfreeze' : 'freeze';
-      const res = await fetch(`http://localhost:5000/api/teachers/${teacher._id}/${endpoint}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacher._id}/${endpoint}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -150,7 +150,7 @@ const AdminDashboard = () => {
   const handleDeleteTeacher = async (teacher) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/teachers/${teacher._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacher._id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -175,7 +175,7 @@ const AdminDashboard = () => {
   const fetchTeacherProfile = async (teacherId) => {
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch(`http://localhost:5000/api/teachers/${teacherId}/overview`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/teachers/${teacherId}/overview`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'

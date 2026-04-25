@@ -28,7 +28,7 @@ const StudentProfile = () => {
 
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/students/${STUDENT_ID}/profile`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${STUDENT_ID}/profile`);
         const data = await response.json();
         setStudentData(data);
         setMfaStep(data.mfaEnabled ? 'enabled' : 'initial');
@@ -53,7 +53,7 @@ const StudentProfile = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/students/${STUDENT_ID}/change-password`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${STUDENT_ID}/change-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(passwordData)
@@ -73,7 +73,7 @@ const StudentProfile = () => {
   // --- MFA HANDLERS ---
   const handleStartMfaSetup = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/students/${STUDENT_ID}/mfa/setup`);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${STUDENT_ID}/mfa/setup`);
       const data = await res.json();
       setQrCodeUrl(data.qrCodeUrl);
       setMfaStep('setup');
@@ -84,7 +84,7 @@ const StudentProfile = () => {
 
   const handleVerifyMfa = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/students/${STUDENT_ID}/mfa/verify`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${STUDENT_ID}/mfa/verify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: mfaToken.trim() }) 
@@ -104,7 +104,7 @@ const StudentProfile = () => {
   const handleDisableMfa = async () => {
     if (!window.confirm("Are you sure you want to disable MFA?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/students/${STUDENT_ID}/mfa/disable`, { method: 'POST' });
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${STUDENT_ID}/mfa/disable`, { method: 'POST' });
       if (res.ok) {
         setMfaStep('initial');
         setQrCodeUrl('');

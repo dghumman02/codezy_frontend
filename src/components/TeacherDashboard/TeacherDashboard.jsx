@@ -30,7 +30,7 @@ export default function TeacherDashboard() {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:5000/api/courses/teacher/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/teacher/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json"
@@ -84,7 +84,7 @@ export default function TeacherDashboard() {
     try {
       setAnnouncementsLoading(true);
       const token = localStorage.getItem('token');
-      const res = await fetch('http://localhost:5000/api/notifications', {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/notifications`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch');

@@ -20,7 +20,7 @@ const ManageLabsPage = () => {
         return;
       }
       // Fetch only the labs for this specific class (not all classes in course)
-      const res = await axios.get(`http://localhost:5000/api/courses/${courseId}/classes/${classId}/labs`, {
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${courseId}/classes/${classId}/labs`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -33,7 +33,7 @@ const ManageLabsPage = () => {
        // Fallback: fetch via all-labs and filter by classId
        try {
          const token = localStorage.getItem("token");
-         const res = await axios.get(`http://localhost:5000/api/courses/${courseId}/all-labs`, {
+         const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${courseId}/all-labs`, {
            headers: { Authorization: `Bearer ${token}` }
          });
          const classLabs = (res.data || []).filter(lab => {
@@ -58,7 +58,7 @@ const ManageLabsPage = () => {
     if (!window.confirm("Are you sure you want to delete this lab?")) return;
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:5000/api/courses/${courseId}/classes/${classId}/labs/${labId}`, {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${courseId}/classes/${classId}/labs/${labId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -138,7 +138,7 @@ const LeaderboardModal = ({ comp, onClose }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/platform-competitions/${comp._id}/leaderboard`, {
+        fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${comp._id}/leaderboard`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(r => r.json())
@@ -257,7 +257,7 @@ const LearnerCompetitionsPage = () => {
 
         const fetchCompetitions = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/platform-competitions/learner', {
+                const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/learner`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
                 });
                 const data = await res.json();

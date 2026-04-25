@@ -20,7 +20,7 @@ const GlobalCoursesPage = () => {
   const fetchGlobalCourses = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:5000/api/curriculum/global-courses');
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/curriculum/global-courses`);
       setCourses(res.data || []);
     } catch (err) {
       console.error("Error loading global courses", err);
@@ -37,7 +37,7 @@ const GlobalCoursesPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to permanently delete this course?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/curriculum/global-courses/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/curriculum/global-courses/${id}`);
       setCourses(courses.filter(c => c._id !== id));
       setSelectedCourses(selectedCourses.filter(selectedId => selectedId !== id));
     } catch (err) {
@@ -49,7 +49,7 @@ const GlobalCoursesPage = () => {
   const handleBulkDelete = async () => {
     if (!window.confirm(`Are you sure you want to delete ${selectedCourses.length} courses?`)) return;
     try {
-      await axios.post('http://localhost:5000/api/curriculum/global-courses/bulk-delete', { 
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/curriculum/global-courses/bulk-delete`, { 
         ids: selectedCourses 
       });
       setCourses(courses.filter(c => !selectedCourses.includes(c._id)));

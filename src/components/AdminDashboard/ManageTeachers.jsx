@@ -10,7 +10,7 @@ import {
   TrendingUp, Menu, Zap, MoreVertical, Snowflake
 } from "lucide-react";
 
-const API_URL = "http://localhost:5000/api/teachers";
+const API_URL = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/teachers`;
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },

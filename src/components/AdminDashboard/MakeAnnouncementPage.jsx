@@ -46,7 +46,7 @@ const MakeAnnouncementPage = () => {
       try {
         setLoadingCourses(true);
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/courses/admin/all', {
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/admin/all`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAvailableCourses(res.data || []);
@@ -130,7 +130,7 @@ const MakeAnnouncementPage = () => {
         ...(selectedCourseId && { courseId: selectedCourseId }),
         ...(selectedClassId  && { classId:  selectedClassId  }),
       };
-      const { data } = await axios.post('http://localhost:5000/api/announcements', payload, {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/announcements`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
       showToast('success', data.message || 'Announcement sent!');

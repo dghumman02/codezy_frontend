@@ -34,7 +34,7 @@ export default function CodezyRegister() {
 
     try {
       // 1. REGISTER (Role is now hardcoded or handled by backend default)
-      const registerRes = await fetch("http://localhost:5000/api/auth/register", {
+      const registerRes = await fetch(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ fullName, username, email, password }), 
@@ -47,7 +47,7 @@ export default function CodezyRegister() {
       }
 
       // 2. AUTO-LOGIN
-      const loginRes = await fetch("http://localhost:5000/api/auth/login", {
+      const loginRes = await fetch(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -104,7 +104,7 @@ export default function CodezyRegister() {
           <div className="flex flex-col md:flex-row">
             {/* Left Image Section */}
             <div className="md:w-1/2 bg-gradient-to-br from-indigo-600 via-purple-600 to-purple-700 p-12 flex items-center justify-center">
-              <img src="/src/assets/login.gif" alt="Register" className="w-full max-w-md mx-auto rounded-2xl shadow-2xl" />
+              <img src={loginGif} alt="Register" className="w-full max-w-md mx-auto rounded-2xl shadow-2xl" />
             </div>
 
             {/* Right Form Section */}

@@ -105,7 +105,7 @@ const SuperAdminCreateCompetitionPage = () => {
             try {
                 const token = localStorage.getItem('token');
                 const res = await axios.get(
-                    'http://localhost:5000/api/platform-competitions/institutions',
+                    `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/institutions`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 setAvailableInstitutions(Array.isArray(res.data) ? res.data : []);
@@ -332,7 +332,7 @@ const SuperAdminCreateCompetitionPage = () => {
 
         try {
             const token = localStorage.getItem('token');
-            await axios.post('http://localhost:5000/api/platform-competitions', payload, {
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions`, payload, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             alert(`Competition "${formData.title}" created successfully!`);

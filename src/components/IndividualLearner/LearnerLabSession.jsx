@@ -111,7 +111,7 @@ const LearnerLabSession = () => {
     setExecutionResult(null);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/code-execution/run-direct', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/code-execution/run-direct`, {
         code,
         language: selectedLanguage === 'javascript' ? 'nodejs' : selectedLanguage,
         testCases: testCases,
@@ -147,7 +147,7 @@ const LearnerLabSession = () => {
     setSubmissionResult(null);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/code-execution/run-direct', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/code-execution/run-direct`, {
         code,
         language: selectedLanguage === 'javascript' ? 'nodejs' : selectedLanguage,
         testCases: testCases,
@@ -199,7 +199,7 @@ const LearnerLabSession = () => {
       
       // First, submit to the learner-submissions API to track submissions properly
       try {
-        submissionResponse = await axios.post('http://localhost:5000/api/learner-submissions/submit-lab', {
+        submissionResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learner-submissions/submit-lab`, {
           learnerId,
           courseId: location.state?.courseId || 'unknown',
           childCourseId: location.state?.childCourseId || null,
@@ -217,7 +217,7 @@ const LearnerLabSession = () => {
       
       // Then call the gamification API for XP and achievements (independent of above)
       try {
-        gamificationResponse = await axios.post('http://localhost:5000/api/learner-gamification/lab-submit', {
+        gamificationResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learner-gamification/lab-submit`, {
           learnerId,
           labId: lesson._id || lesson.id || 'unknown',
           courseId: location.state?.courseId || 'unknown',

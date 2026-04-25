@@ -50,7 +50,7 @@ const ProfilePage = () => {
   // 2. Fetch Profile Data from Database
   useEffect(() => {
     if (userId) {
-      axios.get(`http://localhost:5000/api/learners/profile/${userId}`)
+      axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/profile/${userId}`)
         .then(res => setProfileData(prev => ({ ...prev, ...res.data })))
         .catch(err => console.error("Error fetching profile:", err));
     }
@@ -59,7 +59,7 @@ const ProfilePage = () => {
   const handleSaveProfile = async () => {
     setLoading(true);
     try {
-      const res = await axios.put(`http://localhost:5000/api/learners/profile/${userId}`, {
+      const res = await axios.put(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/profile/${userId}`, {
         fullName: profileData.fullName,
         email: profileData.email,
         bio: profileData.bio
@@ -83,7 +83,7 @@ const ProfilePage = () => {
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/learners/change-password/${userId}`, passData);
+      await axios.put(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/change-password/${userId}`, passData);
       alert("Password changed successfully!");
       setShowPassModal(false);
       setPassData({ currentPassword: "", newPassword: "" });
@@ -95,7 +95,7 @@ const ProfilePage = () => {
 
   const handleSetupMFA = async () => {
     try {
-      const res = await axios.post(`http://localhost:5000/api/learners/setup-mfa/${userId}`);
+      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/setup-mfa/${userId}`);
       setQrCode(res.data.qrCodeUrl);
       setIsSettingUpMfa(true);
     } catch (err) { alert("Could not initialize MFA setup"); }
@@ -103,7 +103,7 @@ const ProfilePage = () => {
 
   const handleVerifyAndActivateMFA = async () => {
     try {
-      await axios.post(`http://localhost:5000/api/learners/verify-mfa/${userId}`, { token: mfaToken });
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/verify-mfa/${userId}`, { token: mfaToken });
       setProfileData({ ...profileData, mfaEnabled: true });
       setIsSettingUpMfa(false);
       alert("MFA is now active!");
@@ -113,7 +113,7 @@ const ProfilePage = () => {
   const handleDisableMFA = async () => {
     if (window.confirm("Disabling MFA reduces account security. Continue?")) {
       try {
-        await axios.put(`http://localhost:5000/api/learners/disable-mfa/${userId}`);
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/disable-mfa/${userId}`);
         setProfileData({ ...profileData, mfaEnabled: false });
       } catch (err) { alert("Error disabling MFA"); }
     }

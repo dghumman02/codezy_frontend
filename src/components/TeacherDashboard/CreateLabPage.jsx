@@ -101,7 +101,7 @@ const CreateLabPage = () => {
                 setSubmitError(null); 
                 const token = localStorage.getItem("token");
                 const res = await axios.get(
-                    `http://localhost:5000/api/courses/${courseId}/classes/${classId}/labs/${labId}`,
+                    `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${courseId}/classes/${classId}/labs/${labId}`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`
@@ -175,7 +175,7 @@ const CreateLabPage = () => {
                 setLoadingCourses(true);
                 const teacherId = localStorage.getItem('userId');
                 const token = localStorage.getItem('token');
-                const res = await axios.get(`http://localhost:5000/api/courses/teacher/${teacherId}`, {
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/teacher/${teacherId}`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
@@ -279,8 +279,8 @@ const CreateLabPage = () => {
         const token = localStorage.getItem("token");
         const isUpdate = labId && courseClassValue === originalCourseClass;
         const url = isUpdate
-            ? `http://localhost:5000/api/courses/${targetCourseId}/classes/${targetClassId}/labs/${labId}`
-            : `http://localhost:5000/api/courses/${targetCourseId}/classes/${targetClassId}/labs`;
+            ? `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${targetCourseId}/classes/${targetClassId}/labs/${labId}`
+            : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/courses/${targetCourseId}/classes/${targetClassId}/labs`;
         const method = isUpdate ? 'put' : 'post';
 
         try {

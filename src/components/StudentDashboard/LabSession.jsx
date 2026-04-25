@@ -100,7 +100,7 @@ const LabSession = ({preloadedData = null}) => {
        // Fetches lab details including tasks, constraints, and test cases
     console.log('Fetching lab details for labId:', labId);
 
-    fetch(`http://localhost:5000/api/students/lab-details/${labId}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/lab-details/${labId}`)
       .then(res => res.json())
       .then(data => {
         console.log('Lab data received:', data);
@@ -203,7 +203,7 @@ const LabSession = ({preloadedData = null}) => {
         hasStudentId: !!studentId
       });
       
-      const response = await axios.post('http://localhost:5000/api/code-execution/run', requestPayload);
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/code-execution/run`, requestPayload);
 
       setExecutionResult(response.data);
     } catch (error) {
@@ -250,7 +250,7 @@ const LabSession = ({preloadedData = null}) => {
       // Evaluate each task
       for (const task of labData.tasks) {
         try {
-          const response = await axios.post('http://localhost:5000/api/code-execution/run', {
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/code-execution/run`, {
             code: taskCodes[task._id],
             language: selectedLanguage,
             labId,
@@ -297,7 +297,7 @@ const LabSession = ({preloadedData = null}) => {
       const studentId = JSON.parse(localStorage.getItem('user'))?.id;
       
       // Submit all tasks to backend
-      const response = await axios.post('http://localhost:5000/api/code-execution/submit-lab', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/code-execution/submit-lab`, {
         labId,
         studentId,
         taskSubmissions: labData.tasks.map(task => ({
@@ -379,7 +379,7 @@ const LabSession = ({preloadedData = null}) => {
     const courseId = parts[0];
     const lessonTitle = decodeURIComponent(parts.slice(1).join('_'));
 
-    const response = await axios.post('http://localhost:5000/api/learners/submit-lab', {
+    const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/learners/submit-lab`, {
       userId,
       courseId,
       lessonTitle,
@@ -416,7 +416,7 @@ const LabSession = ({preloadedData = null}) => {
     setAiError(null);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/students/ai-analyze', {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/ai-analyze`, {
         code,
         language: selectedLanguage,
         taskTitle: currentTask?.title,

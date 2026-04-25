@@ -9,8 +9,8 @@ import {
   TrendingUp, Menu, Zap, AlertTriangle
 } from "lucide-react";
 
-const API_COURSES = "http://localhost:5000/api/courses";
-const API_TEACHERS = "http://localhost:5000/api/teachers";
+const API_COURSES = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/courses`;
+const API_TEACHERS = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/teachers`;
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },

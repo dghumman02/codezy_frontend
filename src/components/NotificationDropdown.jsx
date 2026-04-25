@@ -94,7 +94,7 @@ const NotificationDropdown = () => {
     if (!token) return;
 
     // Connect to socket server
-    const socket = io(import.meta.env.VITE_SOCKET_URL || "http://localhost:5000", {
+    const socket = io(import.meta.env.VITE_SOCKET_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`, {
       auth: { token },
       transports: ["websocket", "polling"],
       reconnectionAttempts: 5,

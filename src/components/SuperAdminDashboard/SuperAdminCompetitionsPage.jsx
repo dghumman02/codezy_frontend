@@ -43,7 +43,7 @@ const LeaderboardModal = ({ comp, onClose }) => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         axios
-            .get(`http://localhost:5000/api/platform-competitions/${comp._id}/leaderboard`, {
+            .get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${comp._id}/leaderboard`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
             .then(r => { setData(r.data); setLoading(false); })
@@ -168,7 +168,7 @@ const SuperAdminCompetitionsPage = () => {
         const fetchCompetitions = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get('http://localhost:5000/api/platform-competitions', {
+                const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setCompetitions(Array.isArray(res.data) ? res.data : []);
@@ -185,7 +185,7 @@ const SuperAdminCompetitionsPage = () => {
         if (!window.confirm(`Delete competition "${title}"? This cannot be undone.`)) return;
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/platform-competitions/${id}`, {
+            await axios.delete(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/platform-competitions/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setCompetitions(prev => prev.filter(c => c._id !== id));

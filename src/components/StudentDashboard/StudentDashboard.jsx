@@ -18,7 +18,7 @@ const formatDateTime = (dateString) => {
 };
 
 const fetchStudentData = async (studentId) => {
-  const response = await fetch(`http://localhost:5000/api/students/${studentId}/dashboard-data`, {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${studentId}/dashboard-data`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${localStorage.getItem("token")}`

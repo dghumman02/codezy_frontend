@@ -70,7 +70,7 @@ const CourseLabs = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/students/${studentId}/courses/${courseId}/labs`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/students/${studentId}/courses/${courseId}/labs`)
       .then((res) => res.json())
       .then((data) => {
         setActiveLabs(data.active || []);

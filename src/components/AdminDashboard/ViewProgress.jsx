@@ -7,7 +7,7 @@ import {
   ChevronDown, ChevronUp, Download, Bell, TrendingUp, CreditCard, MessageSquare, UserCog
 } from "lucide-react";
 
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api`;
 
 const ViewProgress = () => {
   const navigate = useNavigate();

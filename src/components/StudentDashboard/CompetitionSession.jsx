@@ -38,7 +38,7 @@ const LeaderboardModal = ({ competitionId, onClose }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/competitions/${competitionId}/leaderboard`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions/${competitionId}/leaderboard`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(r => { setData(r.data); setLoading(false); })
@@ -118,7 +118,7 @@ const CompetitionSession = () => {
         if (!studentId) { navigate('/login'); return; }
         if (!competitionId) { navigate(-1); return; }
 
-        axios.get(`http://localhost:5000/api/competitions/${competitionId}`, {
+        axios.get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions/${competitionId}`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
         })
             .then(r => {
@@ -153,7 +153,7 @@ const CompetitionSession = () => {
         setIsRunning(true);
         setRunResult(null);
         try {
-            const r = await axios.post(`http://localhost:5000/api/competitions/${competitionId}/run`, {
+            const r = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions/${competitionId}/run`, {
                 taskId: currentTask._id, code, language
             }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
             setRunResult(r.data);
@@ -176,7 +176,7 @@ const CompetitionSession = () => {
         const scores = [];
         for (const task of compData.tasks) {
             try {
-                const r = await axios.post(`http://localhost:5000/api/competitions/${competitionId}/run`, {
+                const r = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions/${competitionId}/run`, {
                     taskId: task._id, code: taskCodes[task._id], language
                 }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
                 scores.push({ taskId: task._id, taskTitle: task.title, taskMarks: task.marks, score: r.data.score || 0 });
@@ -193,7 +193,7 @@ const CompetitionSession = () => {
     const handleConfirmSubmit = async () => {
         setIsSubmitting(true);
         try {
-            const r = await axios.post(`http://localhost:5000/api/competitions/${competitionId}/submit`, {
+            const r = await axios.post(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/competitions/${competitionId}/submit`, {
                 studentId,
                 taskSubmissions: compData.tasks.map(t => ({
                     taskId: t._id, code: taskCodes[t._id], score: taskScores.find(s => s.taskId === t._id)?.score || 0
