@@ -38,7 +38,7 @@ const StudentCourses = () => {
       }
     }).then((res) => res.json())
       .then((data) => {
-        setCourses(data);
+        setCourses(Array.isArray(data) ? data : []);
         setIsLoading(false);
       })
       .catch((err) => {
