@@ -657,14 +657,7 @@ const LearnerDashboard = () => {
                   key={course._id || `course-${index}`}
                   course={course}
                   index={index}
-                  onView={() => {
-                    const subscribed = isSubscribed(course._id, course.parentId);
-                    if (subscribed) {
-                      navigate('/courses');
-                    } else {
-                      setSelectedCourse(course);
-                    }
-                  }}
+                  onView={() => setSelectedCourse(course)}
                   subscribed={isSubscribed(course._id, course.parentId)}
                 />
               ))}
