@@ -87,8 +87,15 @@ export default function CodezyRegister() {
         sessionStorage.removeItem("redirectAfterLogin");
         navigate(redirectAfterLogin, { replace: true });
       } else {
-        // Fallback to the main learner dashboard
-        navigate("/learner", { replace: true });
+        const role = loginData.role;
+        const roleRoutes = {
+          individual_learner: "/learner-dashboard",
+          student: "/student",
+          teacher: "/teacher",
+          institution_admin: "/admin",
+          superadmin: "/superadmin-dashboard",
+        };
+        navigate(roleRoutes[role] || "/learner-dashboard", { replace: true });
       }
 
     } catch (err) {
