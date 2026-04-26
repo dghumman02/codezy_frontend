@@ -5,7 +5,7 @@ import {
   ChevronLeft, Play, CheckCircle2, XCircle, Info,
   AlertTriangle, Terminal, Target, ShieldCheck,
   Send, Loader2, Award, X, Star, Zap, Trophy, TrendingUp,
-  Monitor, Eye, Code2
+  Monitor, Eye, Code2, Sparkles
 } from 'lucide-react';
 import axios from 'axios';
 import Editor from '@monaco-editor/react';
@@ -69,6 +69,12 @@ const LearnerLabSession = () => {
   const [submissionConfirmed, setSubmissionConfirmed] = useState(false);
   const [isProcessingGamification, setIsProcessingGamification] = useState(false);
   const [gamificationResult, setGamificationResult] = useState(null);
+
+  // AI Analyzer states
+  const [showAiPanel, setShowAiPanel] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [aiAnalysis, setAiAnalysis] = useState(null);
+  const [aiError, setAiError] = useState(null);
 
   if (!lesson || !labConfig) {
     return (
@@ -254,6 +260,33 @@ const LearnerLabSession = () => {
     setShowSubmissionPopup(false);
     setSubmissionConfirmed(false);
     setGamificationResult(null);
+  };
+
+  // AI Code Analysis
+  const handleAiAnalyze = async () => {
+    if (!code || !code.trim()) {
+      alert('Please write some code first before asking for AI help!');
+      return;
+    }
+    setShowAiPanel(true);
+    setIsAnalyzing(true);
+    setAiAnalysis(null);
+    setAiError(null);
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/learners/ai-analyze`, {
+        code,
+        language: selectedLanguage,
+        taskTitle: lesson.title,
+        taskDescription: labConfig.problemStatement || "",
+        codeConstraints: constraints,
+        labTitle: lesson.title
+      });
+      setAiAnalysis(response.data);
+    } catch (err) {
+      setAiError(err.response?.data?.message || "AI analysis failed. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
   };
 
   return (
@@ -518,21 +551,30 @@ const LearnerLabSession = () => {
                   <Terminal size={14} /> Results Console
                 </div>
               )}
-              <button
-                onClick={handleRunCode}
-                disabled={isRunning}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white px-6 py-1.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-indigo-900/20 active:scale-95"
-              >
-                {isRunning ? (
-                  <>
-                    <Loader2 size={12} className="animate-spin" /> Running...
-                  </>
-                ) : (
-                  <>
-                    <Play size={12} fill="currentColor" /> Run Code
-                  </>
-                )}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleAiAnalyze}
+                  disabled={isRunning}
+                  className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white px-4 py-1.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-purple-900/20 active:scale-95"
+                >
+                  <Sparkles size={12} /> AI Assistance
+                </button>
+                <button
+                  onClick={handleRunCode}
+                  disabled={isRunning}
+                  className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 disabled:bg-slate-700 disabled:cursor-not-allowed text-white px-6 py-1.5 rounded-xl text-xs font-bold transition-all shadow-lg shadow-indigo-900/20 active:scale-95"
+                >
+                  {isRunning ? (
+                    <>
+                      <Loader2 size={12} className="animate-spin" /> Running...
+                    </>
+                  ) : (
+                    <>
+                      <Play size={12} fill="currentColor" /> Run Code
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
 
             <div className="flex-1 overflow-hidden">
@@ -605,6 +647,122 @@ const LearnerLabSession = () => {
           </div>
         </section>
       </main>
+
+      {/* AI Analysis Panel */}
+      <AnimatePresence>
+        {showAiPanel && (
+          <motion.div
+            initial={{ opacity: 0, x: 400 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 400 }}
+            className="fixed right-0 top-0 h-full w-[400px] bg-[#0F172A] border-l border-slate-800 flex flex-col z-40 shadow-2xl"
+          >
+            <div className="bg-gradient-to-r from-purple-900/50 to-indigo-900/50 px-5 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                  <Sparkles size={16} className="text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-white font-bold text-sm">AI Code Assistant</h3>
+                  <p className="text-slate-500 text-[10px]">{lesson.title}</p>
+                </div>
+              </div>
+              <button onClick={() => setShowAiPanel(false)} className="p-1.5 hover:bg-slate-700 rounded-lg transition-colors text-slate-400">
+                <X size={16} />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-5 space-y-4">
+              {isAnalyzing && (
+                <div className="flex flex-col items-center justify-center py-16 gap-4">
+                  <div className="w-16 h-16 rounded-full border-2 border-purple-500/20 flex items-center justify-center">
+                    <Loader2 size={28} className="animate-spin text-purple-400" />
+                  </div>
+                  <div className="text-center">
+                    <p className="text-white font-bold text-sm">Analyzing your code...</p>
+                    <p className="text-slate-500 text-xs mt-1">AI is reviewing your solution</p>
+                  </div>
+                </div>
+              )}
+
+              {aiError && !isAnalyzing && (
+                <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <XCircle size={14} className="text-red-400" />
+                    <span className="text-red-400 font-bold text-xs">Analysis Failed</span>
+                  </div>
+                  <p className="text-slate-400 text-xs">{aiError}</p>
+                  <button onClick={handleAiAnalyze} className="mt-3 text-xs text-purple-400 hover:text-purple-300 font-semibold">
+                    Try Again →
+                  </button>
+                </div>
+              )}
+
+              {aiAnalysis && !isAnalyzing && (
+                <div className="space-y-4">
+                  {aiAnalysis.overallAssessment && (
+                    <div className="bg-slate-900/80 rounded-xl p-4 border border-slate-800">
+                      <h4 className="text-[10px] font-black text-purple-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <Info size={12} /> Overall Assessment
+                      </h4>
+                      <p className="text-slate-300 text-sm leading-relaxed">{aiAnalysis.overallAssessment}</p>
+                    </div>
+                  )}
+                  {aiAnalysis.issues && aiAnalysis.issues.length > 0 && (
+                    <div className="space-y-2">
+                      <h4 className="text-[10px] font-black text-red-400 uppercase tracking-widest flex items-center gap-2">
+                        <AlertTriangle size={12} /> Issues Found
+                      </h4>
+                      {aiAnalysis.issues.map((issue, idx) => (
+                        <div key={idx} className="bg-red-500/5 border border-red-500/20 rounded-xl p-3">
+                          <p className="text-slate-300 text-xs leading-relaxed">{issue}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {aiAnalysis.hints && aiAnalysis.hints.length > 0 && (
+                    <div className="space-y-2">
+                      <h4 className="text-[10px] font-black text-amber-400 uppercase tracking-widest flex items-center gap-2">
+                        <Target size={12} /> Approach Hints
+                      </h4>
+                      {aiAnalysis.hints.map((hint, idx) => (
+                        <div key={idx} className="bg-amber-500/5 border border-amber-500/20 rounded-xl p-3">
+                          <div className="flex gap-2">
+                            <span className="text-amber-500 font-bold text-xs shrink-0">{idx + 1}.</span>
+                            <p className="text-slate-300 text-xs leading-relaxed">{hint}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {aiAnalysis.logicFeedback && (
+                    <div className="bg-blue-500/5 border border-blue-500/20 rounded-xl p-4">
+                      <h4 className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <ShieldCheck size={12} /> Logic Analysis
+                      </h4>
+                      <p className="text-slate-300 text-xs leading-relaxed">{aiAnalysis.logicFeedback}</p>
+                    </div>
+                  )}
+                  {aiAnalysis.constraintFeedback && (
+                    <div className="bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-4">
+                      <h4 className="text-[10px] font-black text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                        <ShieldCheck size={12} /> Constraint Check
+                      </h4>
+                      <p className="text-slate-300 text-xs leading-relaxed">{aiAnalysis.constraintFeedback}</p>
+                    </div>
+                  )}
+                  <button
+                    onClick={handleAiAnalyze}
+                    className="w-full py-2.5 bg-purple-600/20 hover:bg-purple-600/30 border border-purple-500/30 text-purple-400 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2"
+                  >
+                    <Sparkles size={12} /> Re-analyze Updated Code
+                  </button>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Submission Result Popup - Two Phase Modal */}
       <AnimatePresence>
