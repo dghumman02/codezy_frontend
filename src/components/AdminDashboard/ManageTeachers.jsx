@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import {
   Plus, Edit2, Trash2, User, Loader2, Filter,
   LogOut, Bell, LayoutDashboard, ListChecks, BookOpenCheck, LineChart,
-  CreditCard, MessageSquare, UserCog, X, ChevronDown, Mail, Briefcase, 
-  Award, FileText, Settings, Eye, CheckSquare, Square, UploadCloud, ToggleLeft, ToggleRight,
+  CreditCard, MessageSquare, UserCog, X, ChevronDown, Mail, Briefcase,
+  Award, FileText, Settings, Eye, EyeOff, CheckSquare, Square, UploadCloud, ToggleLeft, ToggleRight,
   TrendingUp, Menu, Zap, MoreVertical, Snowflake
 } from "lucide-react";
 
@@ -44,6 +44,7 @@ const ManageTeachers = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [openMenuId, setOpenMenuId] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [showFreezeModal, setShowFreezeModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [actionTeacher, setActionTeacher] = useState(null);
@@ -134,6 +135,9 @@ const ManageTeachers = () => {
   const handleSaveTeacher = async () => {
     if (!newTeacher.name || !newTeacher.email || !newTeacher.role) {
       return alert("Required: Name, Email, Role");
+    }
+    if (!isEditing && !newTeacher.password) {
+      return alert("Password is required when creating a teacher");
     }
     const payload = {
       ...newTeacher,
@@ -578,6 +582,27 @@ const ManageTeachers = () => {
                     <div className="col-span-2">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block ml-1">Email Address</label>
                       <input type="email" className="w-full bg-slate-50 border border-slate-100 p-3 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium" value={newTeacher.email} onChange={e => setNewTeacher({...newTeacher, email: e.target.value})} />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block ml-1">
+                        Password {isEditing && <span className="normal-case text-slate-300 font-medium">(leave blank to keep current)</span>}
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          className="w-full bg-slate-50 border border-slate-100 p-3 pr-10 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-medium"
+                          value={newTeacher.password}
+                          onChange={e => setNewTeacher({...newTeacher, password: e.target.value})}
+                          placeholder={isEditing ? "Leave blank to keep current" : "Enter password"}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(p => !p)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        >
+                          {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
+                      </div>
                     </div>
                     <div>
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 block ml-1">Role</label>
