@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { Save, X, Plus, Trash2, Calendar, Clock, FileText, Code, Sparkles, Zap, Eye, Sliders, Check, Ban } from 'lucide-react';
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 
 const CODE_CONSTRUCTS = {
@@ -82,6 +82,7 @@ const CreateLabPage = () => {
     const navigate = useNavigate();
    
     const { labId, courseId, classId } = useParams();
+    const [searchParams] = useSearchParams();
     const [isImportedToCourse, setIsImportedToCourse] = useState(false);
     const [originalCourseClass, setOriginalCourseClass] = useState('');
     const [originalLabData, setOriginalLabData] = useState(null);
@@ -168,6 +169,69 @@ const CreateLabPage = () => {
 
         fetchLab();
     }, [labId, courseId, classId]);
+
+    // Pre-fill form when importing a shared lab
+    useEffect(() => {
+        const importSharedLabId = searchParams.get("importSharedLabId");
+        const importCourseId = searchParams.get("courseId");
+        if (!importSharedLabId) return;
+
+        const fetchSharedLab = async () => {
+            try {
+                setLoading(true);
+                const token = localStorage.getItem("token");
+                const res = await axios.get(
+                    `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/shared-labs/${importSharedLabId}`,
+                    { headers: { Authorization: `Bearer ${token}` } }
+                );
+                const lab = res.data;
+                if (!lab) return;
+
+                setLabData(prev => ({
+                    ...prev,
+                    title: lab.title ?? '',
+                    description: lab.description ?? '',
+                    instructions: lab.instructions ?? '',
+                    totalMarks: lab.marks ?? '',
+                    difficulty: lab.difficulty ?? 'Medium',
+                    // dates left blank — teacher must set fresh schedule
+                    startDate: '',
+                    startTime: '',
+                    dueDate: '',
+                    dueTime: '',
+                }));
+
+                const mappedTasks = (lab.tasks ?? []).map((task, tIndex) => ({
+                    ...task,
+                    id: Date.now() + tIndex,
+                    marks: task.marks ?? '',
+                    description: task.description ?? '',
+                    testCases: (task.testCases ?? []).map((tc, i) => ({
+                        ...tc,
+                        id: Date.now() + tIndex + i + 100,
+                        input: tc.input ?? '',
+                        expectedOutput: tc.expectedOutput ?? '',
+                        comparisonMode: tc.comparisonMode ?? 'Exact',
+                    })),
+                    codeConstraints: (task.codeConstraints ?? []).map((c, i) => ({
+                        ...c,
+                        id: Date.now() + tIndex + i + 200,
+                        construct: c.construct ?? '',
+                        type: c.type ?? 'Required',
+                        specifics: c.specifics || { minDepth: 0, maxDepth: 0 },
+                    })),
+                }));
+
+                if (mappedTasks.length > 0) setTasks(mappedTasks);
+            } catch (err) {
+                console.error("Failed to load shared lab:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSharedLab();
+    }, [searchParams]);
 
     useEffect(() => {
         const loadCoursesFromApi = async () => {
