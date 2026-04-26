@@ -110,12 +110,11 @@ const LearnerDashboard = () => {
       const token = localStorage.getItem("token");
 
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/payments/create-checkout-session`,
+        `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/payments/create-course-checkout`,
         {
+          courseId: course._id,
           courseTitle: course.title,
           coursePrice: course.price,
-          courseId: course._id,
-          successUrl: `${window.location.origin}/learner-dashboard?courseId=${course._id}`
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
