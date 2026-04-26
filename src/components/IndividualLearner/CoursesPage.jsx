@@ -732,27 +732,36 @@ const CoursesPage = () => {
                 </div>
 
                 {/* VIDEO */}
-                {activeLesson.type === "video" && (
-                  activeLesson.videoUrl ? (
-                    <div className="aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl">
-                      <video
-                        controls
-                        className="w-full h-full"
-                        src={
-                          activeLesson.videoUrl.startsWith("http")
-                            ? activeLesson.videoUrl
-                            : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}${activeLesson.videoUrl}`
-                        }
-                      >
-                        Your browser does not support the video tag.
-                      </video>
-                    </div>
-                  ) : (
+                {activeLesson.type === "video" && (() => {
+                  const url = activeLesson.videoUrl;
+                  if (!url) return (
                     <div className="aspect-video rounded-[2rem] bg-slate-100 flex items-center justify-center border-2 border-dashed border-slate-200">
                       <p className="text-slate-400 font-bold text-sm">No video URL provided.</p>
                     </div>
-                  )
-                )}
+                  );
+                  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+                  if (ytMatch) {
+                    return (
+                      <div className="aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl">
+                        <iframe
+                          className="w-full h-full"
+                          src={`https://www.youtube.com/embed/${ytMatch[1]}`}
+                          title={activeLesson.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    );
+                  }
+                  return (
+                    <div className="aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl">
+                      <video controls className="w-full h-full"
+                        src={url.startsWith("http") ? url : `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}${url}`}>
+                        Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  );
+                })()}
 
                 {/* LAB */}
                 {activeLesson.type === 'lab' && (

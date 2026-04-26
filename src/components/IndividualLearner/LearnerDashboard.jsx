@@ -437,29 +437,36 @@ const LearnerDashboard = () => {
                 </div>
 
                 {/* VIDEO */}
-                {activeLesson.type === "video" && (
-                  activeLesson.videoUrl ? (
+                {activeLesson.type === "video" && (() => {
+                  const url = activeLesson.videoUrl;
+                  if (!url) return (
+                    <div className="aspect-video rounded-[2rem] bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-200">
+                      <p className="text-gray-400 font-bold text-sm">No video URL provided.</p>
+                    </div>
+                  );
+                  const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+                  if (ytMatch) {
+                    return (
+                      <div className="aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl">
+                        <iframe
+                          className="w-full h-full"
+                          src={`https://www.youtube.com/embed/${ytMatch[1]}`}
+                          title={activeLesson.title}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    );
+                  }
+                  return (
                     <div className="aspect-video rounded-[2rem] overflow-hidden bg-black shadow-2xl">
-                      <video
-                        controls
-                        className="w-full h-full"
-                        src={
-                          activeLesson.videoUrl.startsWith("http")
-                            ? activeLesson.videoUrl
-                            : `${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}${activeLesson.videoUrl}`
-                        }
-                      >
+                      <video controls className="w-full h-full"
+                        src={url.startsWith("http") ? url : `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}${url}`}>
                         Your browser does not support the video tag.
                       </video>
                     </div>
-                  ) : (
-                    <div className="aspect-video rounded-[2rem] bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-200">
-                      <p className="text-gray-400 font-bold text-sm">
-                        No video URL provided.
-                      </p>
-                    </div>
-                  )
-                )}
+                  );
+                })()}
 
                 {activeLesson.type === 'lab' && (
                   <div className="space-y-6">
