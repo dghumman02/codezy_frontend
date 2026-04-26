@@ -234,8 +234,9 @@ const CourseStudents = () => {
     };
 
     const handleEditStudent = (index) => {
-        setManualStudent({ ...students[index] });
+        setManualStudent({ ...students[index], password: '' });
         setEditIndex(index);
+        setShowPassword(false);
         setShowModal(true);
     };
 
@@ -305,7 +306,7 @@ const CourseStudents = () => {
                             </button>
                         )}
                     </div>
-                    <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-indigo-100">
+                    <button onClick={() => { setManualStudent({ name: '', rollNumber: '', email: '', password: '', xp: 0, progress: 0 }); setEditIndex(null); setShowPassword(false); setShowModal(true); }} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-lg shadow-indigo-100">
                         <PlusCircle className="w-5 h-5" /> <span>Manage List</span>
                     </button>
                 </div>
