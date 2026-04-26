@@ -162,7 +162,7 @@ export default function LandingPage() {
     if (token && userId) {
       setUser({ token, role, userId });
       axios
-        .get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/subscription/${userId}`)
+        .get(`${import.meta.env.VITE_BACKEND_URL || `${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}`}/api/subscription/user/${userId}`)
         .then((res) => setCurrentPlan(res.data.planName))
         .catch(() => setCurrentPlan(null)); // safe fallback if no subscription
     }
