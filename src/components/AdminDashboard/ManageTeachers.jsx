@@ -139,6 +139,9 @@ const ManageTeachers = () => {
     if (!isEditing && !newTeacher.password) {
       return alert("Password is required when creating a teacher");
     }
+    if (!isEditing && newTeacher.password.length < 6) {
+      return alert("Password must be at least 6 characters");
+    }
     const payload = {
       ...newTeacher,
       department: typeof newTeacher.departmentStr === 'string' 
@@ -155,7 +158,7 @@ const ManageTeachers = () => {
       setShowAddModal(false);
       setNewTeacher({ ...defaultTeacher });
     } catch (err) {
-      alert("Error saving teacher to database");
+      alert(err.response?.data?.message || "Error saving teacher to database");
     }
   };
 
