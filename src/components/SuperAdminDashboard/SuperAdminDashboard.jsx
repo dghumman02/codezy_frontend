@@ -39,6 +39,20 @@ const SuperAdminDashboard = () => {
     individualCourses: [] 
   });
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState(null);
+
+  const handleDeleteInstitution = async (institutionId, institutionName) => {
+    if (!window.confirm(`Are you sure you want to delete "${institutionName}"?\n\nThis will permanently delete the institution and ALL associated students, teachers, courses, and users. This action cannot be undone.`)) return;
+    setDeletingId(institutionId);
+    try {
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:5000"}/api/superadmin/institution/${institutionId}`);
+      setData(prev => ({ ...prev, institutions: prev.institutions.filter(inst => inst._id !== institutionId) }));
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete institution. Please try again.");
+    } finally {
+      setDeletingId(null);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -144,7 +158,17 @@ const SuperAdminDashboard = () => {
                       <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md uppercase tracking-wider">Verified System</span>
                     </div>
                   </div>
-                  <button className="text-gray-400 hover:text-red-500 transition-colors"><Trash2 size={20}/></button>
+                  <button
+                    onClick={() => handleDeleteInstitution(inst._id, inst.name)}
+                    disabled={deletingId === inst._id}
+                    className="text-gray-400 hover:text-red-500 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    {deletingId === inst._id ? (
+                      <span className="inline-block w-5 h-5 border-2 border-red-400 border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <Trash2 size={20}/>
+                    )}
+                  </button>
                 </div>
                 <div className="grid grid-cols-3 gap-4 border-t border-gray-50 pt-6">
                   <DataDetail label="Learners" value={inst.students} />
