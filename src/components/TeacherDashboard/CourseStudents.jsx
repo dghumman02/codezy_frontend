@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ChevronLeft, Search, PlusCircle, Upload, X, Trash2, Edit2, CheckSquare, Square, MoreVertical, Snowflake, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, Search, PlusCircle, Upload, X, Trash2, Edit2, CheckSquare, Square, MoreVertical, Snowflake, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 import Papa from 'papaparse';
 import { useParams } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ const CourseStudents = () => {
     const { courseId, classId: routeClassId } = useParams();
     
     // New state for dropdown and confirmation modal
+    const [showPassword, setShowPassword] = useState(false);
     const [activeDropdownId, setActiveDropdownId] = useState(null);
     const [confirmModal, setConfirmModal] = useState({ show: false, type: '', student: null, index: null });
     const dropdownRef = useRef(null);
@@ -172,6 +173,8 @@ const CourseStudents = () => {
     // --- Add or Edit Single Student ---
     const handleAddOrEditStudent = async () => {
         if (!manualStudent.name || !manualStudent.rollNumber || !classId || !course) return;
+        if (editIndex === null && !manualStudent.password) return alert("Password is required");
+        if (editIndex === null && manualStudent.password.length < 6) return alert("Password must be at least 6 characters");
         try {
             const token = localStorage.getItem("token");
             if (editIndex !== null) {
@@ -410,7 +413,7 @@ const CourseStudents = () => {
             {showModal && (
                 <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
                     <div className="bg-white p-8 rounded-[2rem] w-full max-w-md relative shadow-2xl border-t-[10px] border-indigo-600">
-                        <button onClick={() => { setShowModal(false); setEditIndex(null); }} className="absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-red-500 hover:text-white transition-all">
+                        <button onClick={() => { setShowModal(false); setEditIndex(null); setShowPassword(false); }} className="absolute top-6 right-6 p-2 rounded-full bg-gray-100 hover:bg-red-500 hover:text-white transition-all">
                             <X className="w-5 h-5" />
                         </button>
                         <h3 className="text-2xl font-black text-gray-900 mb-6 uppercase tracking-tight">{editIndex !== null ? 'Edit Student' : 'Add Students'}</h3>
@@ -427,6 +430,22 @@ const CourseStudents = () => {
                             <input type="text" placeholder="Name" value={manualStudent.name} onChange={(e) => setManualStudent({ ...manualStudent, name: e.target.value })} className="w-full bg-gray-50 border border-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" />
                             <input type="text" placeholder="Roll Number" value={manualStudent.rollNumber} onChange={(e) => setManualStudent({ ...manualStudent, rollNumber: e.target.value })} className="w-full bg-gray-50 border border-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" />
                             <input type="email" placeholder="Email" value={manualStudent.email} onChange={(e) => setManualStudent({ ...manualStudent, email: e.target.value })} className="w-full bg-gray-50 border border-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" />
+                            <div className="relative">
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder={editIndex !== null ? "Password (leave blank to keep current)" : "Password"}
+                                    value={manualStudent.password}
+                                    onChange={(e) => setManualStudent({ ...manualStudent, password: e.target.value })}
+                                    className="w-full bg-gray-50 border border-gray-100 p-3 pr-10 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(p => !p)}
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                >
+                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
+                            </div>
                             <div className="grid grid-cols-2 gap-3">
                                 <input type="number" placeholder="XP" value={manualStudent.xp} onChange={(e) => setManualStudent({ ...manualStudent, xp: e.target.value })} className="bg-gray-50 border border-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" />
                                 <input type="number" placeholder="Progress %" value={manualStudent.progress} onChange={(e) => setManualStudent({ ...manualStudent, progress: e.target.value })} className="bg-gray-50 border border-gray-100 p-3 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" />
